@@ -21,12 +21,16 @@ greenLower = (29, 86, 6)
 greenUpper = (64, 255, 255)
 redLower = (80,181,170)
 redUpper = (160, 261, 260)
+caseLower = (158,100,100)
+caseUpper = (178,255,255)
+
 pts = deque(maxlen=args["buffer"])
  
 # if a video path was not supplied, grab the reference
 # to the webcam
 if not args.get("video", False):
 	camera = cv2.VideoCapture(0)
+	
  
 # otherwise, grab a reference to the video file
 else:
@@ -52,7 +56,7 @@ while True:
 	# construct a mask for the color "green", then perform
 	# a series of dilations and erosions to remove any small
 	# blobs left in the mask
-	mask = cv2.inRange(hsv, greenLower, greenUpper)
+	mask = cv2.inRange(hsv, caseLower, caseUpper)
 	mask = cv2.erode(mask, None, iterations=2)
 	mask = cv2.dilate(mask, None, iterations=2)
 
@@ -95,7 +99,7 @@ while True:
 		cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
  
 	# show the frame to our screen
-	cv2.imshow("Frame", frame)
+	cv2.imshow("Frame", mask)
 	key = cv2.waitKey(1) & 0xFF
  
 	# if the 'q' key is pressed, stop the loop
